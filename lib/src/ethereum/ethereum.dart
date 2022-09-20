@@ -11,7 +11,7 @@ import 'exception.dart';
 part 'interop.dart';
 
 /// Getter for default Ethereum object, cycles through available injector in environment.
-Ethereum? get ethereum => Ethereum.provider;
+Ethereum? get ethereum => Ethereum.ethereum;
 
 /// Interface for connection info used by [Ethereum] method.
 @JS()
@@ -54,42 +54,15 @@ class CurrencyParams extends Interop<_CurrencyParamsImpl> {
 
 /// A Dart Ethereum Provider API for consistency across clients and applications.
 class Ethereum extends Interop<_EthereumImpl> {
-  /// Ethereeum provider api used in Binance Chain Wallet.
-  static Ethereum get binanceChain => Ethereum._(_binanceChain!);
-
   /// Modern Ethereum provider api, injected by many famous environment such as `MetaMask` or `TrustWallet`.
   static Ethereum get ethereum => Ethereum._(_ethereum!);
 
   /// Getter for boolean to detect Ethereum object support. without calling itself to prevent js undefined error.
-  static bool get isSupported =>
-      hasProperty(_window, 'ethereum') || hasProperty(_window, 'BinanceChain');
-
-  /// Getter for default Ethereum provider object, cycles through available injector in environment.
-  static Ethereum? get provider => isSupported
-      ? _ethereum != null
-          ? Ethereum._(_ethereum!)
-          : Ethereum._(_binanceChain!)
-      : null;
-
-  /// Old web3 object, deprecated now.
-  @deprecated
-  static Ethereum? get web3 => _web3 != null ? Ethereum._(_web3!) : null;
+  static bool get isSupported => hasProperty(_window, 'ethereum');
 
   const Ethereum._(_EthereumImpl impl) : super.internal(impl);
 
   set autoRefreshOnNetworkChange(bool b) => impl.autoRefreshOnNetworkChange = b;
-
-  /// Returns a hexadecimal string representing the current chain ID.
-  ///
-  /// Deprecated, Consider using [getChainId] instead.
-  @deprecated
-  String get chainId => impl.chainId;
-
-  /// Returns first [getAccounts] item but may return unexpected value.
-  ///
-  /// Deprecated, Consider using [getAccounts] instead.
-  @deprecated
-  String? get selectedAddress => impl.selectedAddress;
 
   /// Returns List of accounts the node controls.
   Future<List<String>> getAccounts() async =>
@@ -254,13 +227,6 @@ class Ethereum extends Interop<_EthereumImpl> {
   /// ```
   Future<List<String>> requestAccount() async =>
       (await request<List<dynamic>>('eth_requestAccounts')).cast<String>();
-
-  @override
-  String toString() => isSupported
-      ? isConnected() && selectedAddress != null
-          ? 'Ethereum: connected to chain ${int.tryParse(chainId)} with $selectedAddress'
-          : 'Ethereum: not connected to chain ${int.tryParse(chainId)}'
-      : 'Ethereum: provider not supported';
 
   /// Creates a confirmation asking the user to add the specified chain with [chainId], [chainName], [nativeCurrency], and [rpcUrls] to MetaMask.
   ///

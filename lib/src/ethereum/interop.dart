@@ -1,14 +1,7 @@
 part of ethereum;
 
-@JS("BinanceChain")
-external _EthereumImpl? get _binanceChain;
-
 @JS("ethereum")
 external _EthereumImpl? get _ethereum;
-
-@deprecated
-@JS("web3")
-external _EthereumImpl? get _web3;
 
 @JS("window")
 external Object get _window;
@@ -65,11 +58,6 @@ class _CurrencyParamsImpl {
 @anonymous
 class _EthereumImpl {
   external set autoRefreshOnNetworkChange(bool b);
-
-  external String get chainId;
-
-  @deprecated
-  external String? get selectedAddress;
 
   external bool isConnected();
 

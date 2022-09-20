@@ -31,7 +31,7 @@ AbiCoder get abiCoder => EthUtils.defaultAbiCoder;
 
 /// Getter for default Web3Provider object.
 Web3Provider? get provider =>
-    Ethereum.isSupported ? Web3Provider(Ethereum.provider) : null;
+    Ethereum.isSupported ? Web3Provider(Ethereum.ethereum) : null;
 
 /// The AbiCoder is a collection of Coders which can be used to encode and decode the binary data formats used to interoperate between the EVM and higher level libraries.
 ///
