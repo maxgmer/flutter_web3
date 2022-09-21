@@ -57,6 +57,8 @@ class _CurrencyParamsImpl {
 @JS()
 @anonymous
 class _EthereumImpl {
+  external bool get isMetaMask;
+
   external set autoRefreshOnNetworkChange(bool b);
 
   external bool isConnected();
