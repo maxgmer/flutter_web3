@@ -197,7 +197,7 @@ class _RawBlockImpl {
 
   external String get miner;
 
-  external int get nounce;
+  external int get nonce;
 
   external int get number;
 
@@ -245,7 +245,7 @@ class _TransactionImpl {
 
   external BigNumber? get maxPriorityFeePerGas;
 
-  external int get nounce;
+  external int get nonce;
 
   external String get r;
 
